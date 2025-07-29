@@ -1,36 +1,37 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Fiscus - Personal Expense Tracker
 
-## Getting Started
+Fiscus is a modern, full-stack web application designed to help users track their daily expenses with ease and gain clear insights into their spending habits. It features a secure, personalized dashboard where users can manage expenses, categorize them with custom labels, and visualize their financial data through interactive charts.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## ✨ Key Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+* **Secure User Authentication:** Full email and password authentication system using NextAuth.js.
+* **Personalized Dashboards:** Each user has a private space and can only access their own data.
+* **Full CRUD for Expenses:** Create, Read, Update, and Delete expenses with an intuitive interface.
+* **Customizable Labels:** Users can create and manage their own spending categories (e.g., "Food," "Transport," "Bills") with custom names and colors.
+* **Interactive Financial Summary:** View a dynamic pie chart that breaks down expenses by label for any selected month.
+* **Monthly Filtering:** Easily navigate between different months and years to analyze spending over time.
+* **Responsive Design:** A clean and fully responsive UI built with Tailwind CSS that works on all devices.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🛠️ Tech Stack
 
-## Learn More
+This project is built with a modern, scalable, and type-safe technology stack.
 
-To learn more about Next.js, take a look at the following resources:
+* **Framework:** [Next.js](https://nextjs.org/) (handles both frontend and backend)
+* **ORM:** [Prisma](https://www.prisma.io/) (for type-safe database access)
+* **Database:** [PostgreSQL](https://www.postgresql.org/)
+* **Authentication:** [NextAuth.js](https://next-auth.js.org/)
+* **Styling:** [Tailwind CSS](https://tailwindcss.com/)
+* **Charting:** [Recharts](https://recharts.org/) or [Chart.js](https://www.chartjs.org/)
+* **Deployment:** [Vercel](https://vercel.com/)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Prerequisites
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+* Node.js (v18 or later)
+* npm or yarn
+* A running PostgreSQL instance
