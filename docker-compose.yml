@@ -1,9 +1,13 @@
 version: '3.8'
 
 services:
-  app:
+  fiscus_fullstack_image:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
     container_name: fiscus_fullstack
-    build: .
+    image: johedotcom/fiscus-fullstack-repository:latest
     restart: always
     ports:
       - '10010:3000'

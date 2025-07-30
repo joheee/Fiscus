@@ -15,8 +15,8 @@ COPY . .
 RUN npx prisma generate
 RUN npm run build
 
-# ---- Runner Stage (Final Production Image) ----
-FROM base AS runner
+# ---- Production Stage (Final Production Image) ----
+FROM base AS production
 ENV NODE_ENV production
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
