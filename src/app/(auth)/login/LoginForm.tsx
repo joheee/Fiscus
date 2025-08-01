@@ -35,6 +35,7 @@ export default function LoginForm() {
       });
 
       const result = await response.json();
+      console.log(result);
 
       if (!response.ok) {
         setApiError(result.message || "An unknown error occurred.");
@@ -43,15 +44,13 @@ export default function LoginForm() {
         router.push("/login");
       }
     } catch (error) {
-      setApiError("Failed to connect to the server. Please try again.");
+      setApiError("Failed login invalid credentials!");
     }
   };
 
   return (
     <>
-      <h2 className="text-2xl font-bold mb-6 text-center">
-        Login Into Fiscus
-      </h2>
+      <h2 className="text-2xl font-bold mb-6 text-center">Login Into Fiscus</h2>
       <form className="grid gap-6" onSubmit={handleSubmit(onSubmit)}>
         <div className="">
           <label className="block mb-2" htmlFor="email">
