@@ -6,8 +6,9 @@
  * @param props - The component props.
  * @param props.children - The page component to be rendered inside the layout.
  * @returns The rendered authentication layout.
- * @todo 
- * [] Add responsive styling for mobile devices
+ * @todo
+ * [v] Add responsive styling for mobile devices
+ * [v] Full screen card when in mobile devices
  */
 export default function AuthLayout({
   children,
@@ -15,8 +16,11 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <main className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="p-8 bg-white rounded-lg shadow-md w-full max-w-md">
+    <main className="h-screen flex items-center justify-center bg-blue-accent p-8">
+      <div
+        className="sm:w-full sm:max-w-md sm:h-fit 
+        rounded-lg p-8 bg-background shadow-md w-screen h-full"
+      >
         {children}
       </div>
     </main>
