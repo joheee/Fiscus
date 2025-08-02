@@ -10,69 +10,6 @@ export async function GET(request: Request) {
   return NextResponse.json(users);
 }
 
-export async function POST(request: Request) {
-  try {
-    const body = await request.json();
-    const { email, password } = body;
-
-    // 1. Basic validation
-    if (!email || !password) {
-      return NextResponse.json(
-        { message: "Email and password are required." },
-        { status: 400 }
-      );
-    }
-
-    // 2. Find the user in the database
-    const user = await prisma.user.findUnique({
-      where: { email },
-    });
-
-    if (!user) {
-      // Use a generic error message for security
-      return NextResponse.json(
-        { message: "Invalid credentials." },
-        { status: 401 }
-      );
-    }
-
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-
-    if (!isPasswordValid) {
-      return NextResponse.json(
-        { message: "Invalid credentials." },
-        { status: 401 }
-      );
-    }
-
-    // 4. Create the JWT token
-    const secret = process.env.JWT_SECRET;
-    if (!secret) {
-      throw new Error("JWT_SECRET is not defined in environment variables.");
-    }
-
-    const token = jwt.sign(
-      {
-        userId: user.id,
-        email: user.email,
-      },
-      secret,
-      {
-        expiresIn: "1d", // Token expires in 1 day
-      }
-    );
-
-    // 5. Return the token to the client
-    return NextResponse.json({ token }, { status: 200 });
-  } catch (error) {
-    console.error("LOGIN ERROR:", error);
-    return NextResponse.json(
-      { message: "An internal server error occurred." },
-      { status: 500 }
-    );
-  }
-}
-
 export async function PATCH(request: Request) {
   try {
     const body = await request.json();
@@ -106,7 +43,12 @@ export async function PATCH(request: Request) {
       );
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const salt = process.env.JWT_SALT;
+    if (!salt) {
+      throw new Error("JWT_SALT is not defined in environment variables.");
+    }
+
+    const hashedPassword = await bcrypt.hash(password, parseInt(salt));
 
     const newUser = await prisma.user.create({
       data: {

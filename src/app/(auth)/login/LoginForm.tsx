@@ -4,15 +4,16 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Link from "next/link";
+import { LoginUser } from "../server/auth";
 
-type LoginFormValues = {
+export interface LoginFormValues {
   email: string;
   password: string;
-};
+}
 
 export default function LoginForm() {
   const router = useRouter();
-  const [apiError, setApiError] = useState<string | null>(null);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const {
     register,
@@ -26,26 +27,14 @@ export default function LoginForm() {
   });
 
   const onSubmit = async (data: LoginFormValues) => {
-    setApiError(null);
-    try {
-      const response = await fetch("/api/v1/users", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-
-      const result = await response.json();
-      console.log(result);
-
-      if (!response.ok) {
-        setApiError(result.message || "An unknown error occurred.");
-      } else {
-        alert("Login successful!");
-        router.push("/login");
-      }
-    } catch (error) {
-      setApiError("Failed login invalid credentials!");
+    setErrorMsg(null);
+    const result = await LoginUser(data);
+    if (result.error) {
+      setErrorMsg(result.error);
+      return;
     }
+    alert(`Welcome back, ${result.user?.full_name}!`);
+    router.push("/login");
   };
 
   return (
@@ -82,10 +71,6 @@ export default function LoginForm() {
           <input
             {...register("password", {
               required: "Password is required.",
-              minLength: {
-                value: 8,
-                message: "Password must be at least 8 characters.",
-              },
             })}
             className="w-full px-3 py-2 border rounded-lg"
             id="password"
@@ -98,8 +83,8 @@ export default function LoginForm() {
           )}
         </div>
 
-        {apiError && (
-          <p className="text-red-error text-sm mb-4 text-center">{apiError}</p>
+        {errorMsg && (
+          <p className="text-red-error text-sm mb-4 text-center">{errorMsg}</p>
         )}
 
         <button
