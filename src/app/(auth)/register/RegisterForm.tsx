@@ -4,49 +4,46 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Link from "next/link";
+import { RegisterUser } from "../server/auth";
 
-type RegisterFormValues = {
+export interface RegisterFormValues {
   full_name: string;
   email: string;
   password: string;
-};
+  confirm_password: string;
+}
 
 export default function RegisterForm() {
   const router = useRouter();
-  const [apiError, setApiError] = useState<string | null>(null);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm<RegisterFormValues>({
     defaultValues: {
       full_name: "",
       email: "",
       password: "",
+      confirm_password: "",
     },
   });
 
+  const passwordValue = watch("password");
+
   const onSubmit = async (data: RegisterFormValues) => {
-    setApiError(null);
-    try {
-      const response = await fetch("/api/v1/users", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        setApiError(result.message || "An unknown error occurred.");
-      } else {
-        alert("Registration successful! Please log in.");
-        router.push("/login");
-      }
-    } catch (error) {
-      setApiError("Failed to connect to the server. Please try again.");
+    setErrorMsg(null);
+    const result = await RegisterUser(data);
+    if (result.error) {
+      setErrorMsg(result.error);
+      return;
     }
+    alert(
+      `Registration successful! Please login as ${result.user?.full_name}!`
+    );
+    router.push("/login");
   };
 
   return (
@@ -72,7 +69,7 @@ export default function RegisterForm() {
             type="text"
           />
           {errors.full_name && (
-            <p className="text-red-error text-xs mt-1">
+            <p className="text-red-500 text-xs mt-1">
               {errors.full_name.message}
             </p>
           )}
@@ -95,9 +92,7 @@ export default function RegisterForm() {
             type="email"
           />
           {errors.email && (
-            <p className="text-red-error text-xs mt-1">
-              {errors.email.message}
-            </p>
+            <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>
           )}
         </div>
 
@@ -118,18 +113,40 @@ export default function RegisterForm() {
             type="password"
           />
           {errors.password && (
-            <p className="text-red-error text-xs mt-1">
+            <p className="text-red-500 text-xs mt-1">
               {errors.password.message}
             </p>
           )}
         </div>
 
-        {apiError && (
-          <p className="text-red-error text-sm mb-4 text-center">{apiError}</p>
+        <div className="">
+          <label className="block mb-2" htmlFor="confirm_password">
+            Confirm Password
+          </label>
+          <input
+            {...register("confirm_password", {
+              required: "Please confirm your password.",
+              // 3. Add the custom validate function
+              validate: (value) =>
+                value === passwordValue || "The passwords do not match",
+            })}
+            className="w-full px-3 py-2 border rounded-lg"
+            id="confirm_password"
+            type="password" // FIX: Changed type to "password"
+          />
+          {errors.confirm_password && (
+            <p className="text-red-500 text-xs mt-1">
+              {errors.confirm_password.message}
+            </p>
+          )}
+        </div>
+
+        {errorMsg && (
+          <p className="text-red-500 text-sm mb-4 text-center">{errorMsg}</p>
         )}
 
         <button
-          className="w-full bg-blue-500 text-background py-2 rounded-lg disabled:bg-bg-700"
+          className="w-full bg-blue-500 text-white py-2 rounded-lg disabled:bg-gray-400"
           type="submit"
           disabled={isSubmitting}
         >
