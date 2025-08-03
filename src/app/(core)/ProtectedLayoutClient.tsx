@@ -64,11 +64,11 @@ function Sidebar({
           Labels
         </Link>
         <Link
-          href="/profile"
+          href="/analytic"
           onClick={closeSidebar}
           className="block py-2.5 px-6  hover:bg-gray-100"
         >
-          Profile
+          Analytics
         </Link>
       </nav>
     </aside>
