@@ -63,6 +63,5 @@ export async function deleteExpense(expense_id: string) {
   const deleteExpense = await prisma.expense.delete({
     where: { expense_id },
   });
-  revalidatePath("/expense");
   return { success: true, expense: deleteExpense };
 }

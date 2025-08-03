@@ -3,7 +3,6 @@
 import prisma from "@/app/lib/prisma";
 import { getUserSession } from "@/app/lib/session";
 import { Prisma } from "@/generated/prisma";
-import { error } from "console";
 
 export type LabelWithExpense = Prisma.LabelGetPayload<{
   include: { expense: true };
@@ -44,4 +43,13 @@ export async function createLabel(data: LabelFormValues) {
     success: true,
     label: newLabel,
   };
+}
+
+export async function deleteLabel(label_id: string) {
+  const deleteLabel = await prisma.label.delete({
+    where: {
+      label_id,
+    },
+  });
+  return { success: true, label: deleteLabel };
 }
