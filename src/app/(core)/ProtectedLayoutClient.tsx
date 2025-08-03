@@ -47,12 +47,6 @@ function Sidebar({
         </button>
       </div>
       <nav className="mt-6">
-        <Link
-          href="/dashboard"
-          className="block py-2.5 px-6  hover:bg-gray-100"
-        >
-          Dashboard
-        </Link>
         <Link href="/expense" className="block py-2.5 px-6  hover:bg-gray-100">
           Expenses
         </Link>
@@ -78,7 +72,7 @@ function Navbar({
   };
 
   return (
-    <header className="w-full rounded-lg bg-background p-4 shadow-md">
+    <header className="w-full rounded-lg bg-background p-6 shadow-md">
       <div className="flex items-center justify-between">
         {/* Hamburger Menu for Mobile */}
         <button onClick={toggleSidebar} className=" md:hidden">
@@ -136,10 +130,10 @@ export default function ProtectedLayoutClient({
     <div className="flex h-screen bg-blue-accent">
       <Sidebar isOpen={isSidebarOpen} closeSidebar={closeSidebar} />
       <div className="flex flex-1 flex-col">
-        <div className="p-4">
+        <div className="p-6">
           <Navbar session={session} toggleSidebar={toggleSidebar} />
         </div>
-        <main className="flex-1 overflow-y-auto p-4">
+        <main className="flex-1 overflow-y-auto p-6">
           {/* This is where your page content will be rendered */}
           <div className="rounded-lg bg-background p-6 shadow-md">
             {children}
