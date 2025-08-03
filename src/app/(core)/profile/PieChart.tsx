@@ -17,7 +17,10 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { useEffect, useState } from "react";
-import { getExpenseSummaryByLabel } from "@/app/server/profile";
+import {
+  getExpenseSummaryByLabel,
+  getTotalExpensesForCurrentUser,
+} from "@/app/server/profile";
 
 export const description = "A pie chart with a label";
 
@@ -29,13 +32,16 @@ export function ChartPieLabel() {
       fill: string;
     }[]
   >([]);
+  const [totalExpense, setTotalExpense] = useState<number>(0);
   useEffect(() => {
     async function fetchData() {
       const data = await getExpenseSummaryByLabel(
         new Date("2025-08-01"),
         new Date()
       );
+      const totalExpense = await getTotalExpensesForCurrentUser();
       setChartData(data);
+      setTotalExpense(totalExpense);
     }
     fetchData();
   }, []);
@@ -43,8 +49,8 @@ export function ChartPieLabel() {
   return (
     <Card className="flex flex-col">
       <CardHeader className="items-center pb-0">
-        <CardTitle>Pie Chart - Label List</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardTitle>Total Expense By Label</CardTitle>
+        <CardDescription>August 1 - Now</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer
@@ -68,7 +74,11 @@ export function ChartPieLabel() {
       </CardContent>
       <CardFooter className="flex-col gap-2 text-sm">
         <div className="flex items-center gap-2 leading-none font-medium">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
+          You already spend{" "}
+          {new Intl.NumberFormat("en-US", {
+            style: "currency",
+            currency: "IDR",
+          }).format(totalExpense)}
         </div>
         <div className="text-muted-foreground leading-none">
           Showing total visitors for the last 6 months

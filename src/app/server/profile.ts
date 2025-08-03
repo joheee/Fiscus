@@ -72,3 +72,21 @@ export async function getExpenseSummaryByLabel(startDate: Date, endDate: Date) {
 
   return chartData;
 }
+
+export async function getTotalExpensesForCurrentUser() {
+  const session = await getUserSession();
+  if (!session) {
+    return 0;
+  }
+
+  const totalExpenses = await prisma.expense.aggregate({
+    _sum: {
+      price: true,
+    },
+    where: {
+      user_id: session.user_id,
+    },
+  });
+
+  return totalExpenses._sum.price || 0;
+}
