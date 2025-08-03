@@ -35,11 +35,25 @@ export async function getAllExpenseForCurrentUser(): Promise<
       created_at: "desc",
     },
   });
-  console.log(expense);
   return expense;
 }
 
 export async function createExpense(data: ExpenseFormValues) {
-  console.log(data);
-  return { error: "" };
+  const session = await getUserSession();
+  if (!session) {
+    return { error: "Session is empty!" };
+  }
+
+  const newExpense = await prisma.expense.create({
+    data: {
+      label_id: data.label_id,
+      name: data.name,
+      price: data.price,
+      quantity: data.quantity,
+      transaction_date: data.transaction_date,
+      user_id: session.user_id,
+    },
+  });
+
+  return { success: true, expense: newExpense };
 }

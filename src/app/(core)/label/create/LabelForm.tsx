@@ -28,7 +28,7 @@ export default function LabelForm() {
       setErrorMsg(result.error);
       return;
     }
-    alert(`New label ${result.label?.name} was created`);
+    alert(`New label ${result.label?.name} successfully created!`);
     router.push("/label");
   };
 
