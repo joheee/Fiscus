@@ -1,7 +1,18 @@
+// Location: app/(protected)/layout.tsx
+
 import { redirect } from "next/navigation";
 import { getUserSession } from "../lib/session";
+import ProtectedLayoutClient from "./ProtectedLayoutClient";
 
-export default async function AuthLayout({
+/**
+ * This is the main server-side layout for all protected routes.
+ * Its primary job is to verify the user's session. If the user is
+ * not authenticated, it redirects them to the login page.
+ *
+ * It then renders the client-side layout component which handles
+ * the interactive navbar and sidebar.
+ */
+export default async function ProtectedLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -12,13 +23,6 @@ export default async function AuthLayout({
   }
 
   return (
-    <main className="h-screen flex items-center justify-center bg-blue-accent p-6">
-      <div
-        className="sm:w-full sm:max-w-md sm:h-fit 
-        rounded-lg p-6 bg-background shadow-md w-screen h-full"
-      >
-        {children}
-      </div>
-    </main>
+    <ProtectedLayoutClient session={session}>{children}</ProtectedLayoutClient>
   );
 }
