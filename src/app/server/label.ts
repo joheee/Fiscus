@@ -2,12 +2,13 @@
 
 import prisma from "@/app/lib/prisma";
 import { getUserSession } from "@/app/lib/session";
+import { Prisma } from "@/generated/prisma";
 
-/**
- * Fetches all labels created by the currently logged-in user.
- * This is used to populate the select dropdown in the create expense form.
- */
-export async function getLabelsForCurrentUser() {
+export type LabelWithExpense = Prisma.LabelGetPayload<{
+  include: { expense: true };
+}>;
+
+export async function getLabelsForCurrentUser(): Promise<LabelWithExpense[]> {
   const session = await getUserSession();
   if (!session) {
     return [];
@@ -15,6 +16,9 @@ export async function getLabelsForCurrentUser() {
 
   return prisma.label.findMany({
     where: { user_id: session.user_id },
+    include: {
+      expense: true,
+    },
     orderBy: { name: "asc" },
   });
 }

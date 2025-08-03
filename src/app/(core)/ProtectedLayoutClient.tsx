@@ -49,13 +49,25 @@ function Sidebar({
         </button>
       </div>
       <nav className="mt-6">
-        <Link href="/expense" className="block py-2.5 px-6  hover:bg-gray-100">
+        <Link
+          href="/expense"
+          onClick={closeSidebar}
+          className="block py-2.5 px-6  hover:bg-gray-100"
+        >
           Expenses
         </Link>
-        <Link href="/label" className="block py-2.5 px-6  hover:bg-gray-100">
+        <Link
+          href="/label"
+          onClick={closeSidebar}
+          className="block py-2.5 px-6  hover:bg-gray-100"
+        >
           Labels
         </Link>
-        <Link href="/profile" className="block py-2.5 px-6  hover:bg-gray-100">
+        <Link
+          href="/profile"
+          onClick={closeSidebar}
+          className="block py-2.5 px-6  hover:bg-gray-100"
+        >
           Profile
         </Link>
       </nav>
