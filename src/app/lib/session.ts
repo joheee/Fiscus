@@ -12,12 +12,16 @@ export async function CreateJwt(user: { user_id: string }) {
     .setExpirationTime("12h")
     .sign(secretKey);
 
+  console.log("debug", token);
+
   (await cookies()).set("session-token", token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     maxAge: 60 * 60 * 6,
     path: "/",
   });
+
+  console.log("debug session", await getUserSession());
 }
 
 export async function getUserSession() {
