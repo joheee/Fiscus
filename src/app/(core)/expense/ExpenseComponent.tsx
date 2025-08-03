@@ -5,7 +5,7 @@ import { ExpenseDataTable } from "./ExpenseDataTable";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import Link from "next/link";
-import { ExpenseWithLabel } from "../server/expense";
+import { ExpenseWithLabel } from "../../server/expense";
 
 export default function ExpenseComponent({
   expenses,

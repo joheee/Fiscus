@@ -28,3 +28,5 @@ export async function getAllExpenseForCurrentUser(): Promise<
   console.log(expense);
   return expense;
 }
+
+export async function createExpense() {}

@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Link from "next/link";
-import { RegisterUser } from "../server/auth";
+import { RegisterUser } from "../../server/auth";
 
 export interface RegisterFormValues {
   full_name: string;
@@ -92,7 +92,9 @@ export default function RegisterForm() {
             type="email"
           />
           {errors.email && (
-            <p className="text-red-error text-xs mt-1">{errors.email.message}</p>
+            <p className="text-red-error text-xs mt-1">
+              {errors.email.message}
+            </p>
           )}
         </div>
 

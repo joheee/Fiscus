@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Link from "next/link";
-import { LoginUser } from "../server/auth";
+import { LoginUser } from "../../server/auth";
 
 export interface LoginFormValues {
   email: string;

@@ -1,8 +1,8 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
-import { LoginFormValues } from "../login/LoginForm";
-import { RegisterFormValues } from "../register/RegisterForm";
+import { LoginFormValues } from "../(auth)/login/LoginForm";
+import { RegisterFormValues } from "../(auth)/register/RegisterForm";
 import * as bcrypt from "bcryptjs";
 import { CreateJwt } from "@/app/lib/session";
 

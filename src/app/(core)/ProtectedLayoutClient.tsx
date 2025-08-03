@@ -52,6 +52,9 @@ function Sidebar({
         <Link href="/expense" className="block py-2.5 px-6  hover:bg-gray-100">
           Expenses
         </Link>
+        <Link href="/label" className="block py-2.5 px-6  hover:bg-gray-100">
+          Labels
+        </Link>
         <Link href="/profile" className="block py-2.5 px-6  hover:bg-gray-100">
           Profile
         </Link>

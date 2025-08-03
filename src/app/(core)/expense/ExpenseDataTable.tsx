@@ -35,7 +35,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { ExpenseWithLabel } from "../server/expense";
+import { ExpenseWithLabel } from "../../server/expense";
 
 // Define the columns for your expense data
 export const columns: ColumnDef<ExpenseWithLabel>[] = [
