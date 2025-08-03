@@ -4,6 +4,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import { deleteSession } from "../lib/session";
+import { Button } from "@/components/ui/button";
+import { LogOut } from "lucide-react";
 // We'll need a logout action
 
 // Define the type for the session prop for clarity
@@ -99,12 +101,10 @@ function Navbar({
         {/* User Info and Logout */}
         <div className="flex items-center space-x-4">
           <span className="font-medium ">{session.full_name}</span>
-          <button
-            onClick={handleLogout}
-            className="rounded-md bg-red-error px-3 py-1 text-sm  hover:bg-red-600"
-          >
+          <Button variant="outline" onClick={handleLogout}>
             Logout
-          </button>
+            <LogOut className="mr-2 h-4 w-4" />
+          </Button>
         </div>
       </div>
     </header>
@@ -129,7 +129,7 @@ export default function ProtectedLayoutClient({
   return (
     <div className="flex h-screen bg-blue-accent">
       <Sidebar isOpen={isSidebarOpen} closeSidebar={closeSidebar} />
-      <div className="flex flex-1 flex-col">
+      <div className="flex flex-1 flex-col min-w-0">
         <div className="p-6">
           <Navbar session={session} toggleSidebar={toggleSidebar} />
         </div>
