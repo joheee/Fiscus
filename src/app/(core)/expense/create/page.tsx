@@ -1,29 +1,21 @@
 "use client";
 
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { getLabelsForCurrentUser } from "@/app/server/label";
+import { createExpense, ExpenseFormValues } from "@/app/server/expense";
 import { Label as LabelType } from "@/generated/prisma";
 import { DateTimePicker24h } from "@/components/ui/date-time-picker";
-
-// Define the type for our form values
-type ExpenseFormValues = {
-  name: string;
-  quantity: number;
-  price: number;
-  label_id: string;
-};
 
 export default function CreateExpensePage() {
   const router = useRouter();
   const [labels, setLabels] = useState<LabelType[]>([]);
   const [formError, setFormError] = useState<string | null>(null);
 
-  // Since this is a Client Component, we fetch the labels with useEffect
   useEffect(() => {
     getLabelsForCurrentUser().then(setLabels);
   }, []);
@@ -31,25 +23,21 @@ export default function CreateExpensePage() {
   const {
     register,
     handleSubmit,
+    control, // Get the control object from useForm
     formState: { errors, isSubmitting },
-  } = useForm<ExpenseFormValues>();
+  } = useForm<ExpenseFormValues>({
+    defaultValues: {
+      quantity: 1,
+      transaction_date: new Date(), // Set a default value
+    },
+  });
 
-  // This client-side function prepares the data and calls the Server Action
   const onSubmit = async (data: ExpenseFormValues) => {
     setFormError(null);
-
-    // FormData is a standard way to send form data to Server Actions
-    const formData = new FormData();
-    formData.append("name", data.name);
-    formData.append("quantity", String(data.quantity));
-    formData.append("price", String(data.price));
-    formData.append("label_id", data.label_id);
+    const result = await createExpense(data);
 
     if (result?.error) {
       setFormError(result.error);
-    } else {
-      // The redirect will be handled by the server action, but you can
-      // add a fallback or toast message here if you want.
     }
   };
 
@@ -61,9 +49,7 @@ export default function CreateExpensePage() {
           <Label htmlFor="name">Expense Name</Label>
           <Input
             id="name"
-            {...register("name", {
-              required: "Name is required.",
-            })}
+            {...register("name", { required: "Name is required." })}
             placeholder="e.g., Groceries"
           />
           {errors.name && (
@@ -112,17 +98,42 @@ export default function CreateExpensePage() {
         </div>
 
         <div>
-          <Label htmlFor="label_id">Transaction Date</Label>
-          <DateTimePicker24h />
+          <Label htmlFor="transaction_date">Transaction Date</Label>
+          {/* Use the Controller to wrap your custom component */}
+          <Controller
+            name="transaction_date"
+            control={control}
+            rules={{
+              required: "Transaction date is required.",
+              validate: (value) => {
+                // Check if the selected date is not in the future
+                // We allow a small buffer (e.g., 5 minutes) to account for delays
+                const now = new Date();
+                now.setMinutes(now.getMinutes() + 5);
+                return (
+                  value <= now || "Transaction date cannot be in the future."
+                );
+              },
+            }}
+            render={({ field }) => (
+              <DateTimePicker24h
+                value={field.value}
+                onChange={field.onChange}
+              />
+            )}
+          />
+          {errors.transaction_date && (
+            <p className="mt-1 text-sm text-red-500">
+              {errors.transaction_date.message}
+            </p>
+          )}
         </div>
 
         <div>
           <Label htmlFor="label_id">Label</Label>
           <select
             id="label_id"
-            {...register("label_id", {
-              required: "Please select a label.",
-            })}
+            {...register("label_id", { required: "Please select a label." })}
             className="w-full rounded-lg border bg-white px-3 py-2"
           >
             <option value="">Select a label</option>

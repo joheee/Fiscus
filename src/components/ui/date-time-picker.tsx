@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { format } from "date-fns";
-
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -14,27 +13,46 @@ import {
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { CalendarIcon } from "lucide-react";
 
-export function DateTimePicker24h() {
-  const [date, setDate] = React.useState<Date>();
+// The component now accepts `value` and `onChange` to be controlled externally.
+interface DateTimePickerProps {
+  value?: Date;
+  onChange: (date: Date) => void;
+}
+
+export function DateTimePicker24h({ value, onChange }: DateTimePickerProps) {
   const [isOpen, setIsOpen] = React.useState(false);
 
-  const hours = Array.from({ length: 24 }, (_, i) => i);
+  // Create a memoized array of hours to avoid re-calculating on every render.
+  const hours = React.useMemo(
+    () => Array.from({ length: 24 }, (_, i) => i),
+    []
+  );
+  const minutes = React.useMemo(
+    () => Array.from({ length: 12 }, (_, i) => i * 5),
+    []
+  );
+
   const handleDateSelect = (selectedDate: Date | undefined) => {
     if (selectedDate) {
-      setDate(selectedDate);
+      const newDate = new Date(selectedDate);
+      // Preserve the existing time when the date changes.
+      if (value) {
+        newDate.setHours(value.getHours());
+        newDate.setMinutes(value.getMinutes());
+      }
+      onChange(newDate);
     }
   };
 
-  const handleTimeChange = (type: "hour" | "minute", value: string) => {
-    if (date) {
-      const newDate = new Date(date);
-      if (type === "hour") {
-        newDate.setHours(parseInt(value));
-      } else if (type === "minute") {
-        newDate.setMinutes(parseInt(value));
-      }
-      setDate(newDate);
+  const handleTimeChange = (type: "hour" | "minute", timeValue: string) => {
+    // Start with the current value, or now if none is set.
+    const newDate = value ? new Date(value) : new Date();
+    if (type === "hour") {
+      newDate.setHours(parseInt(timeValue));
+    } else {
+      newDate.setMinutes(parseInt(timeValue));
     }
+    onChange(newDate);
   };
 
   return (
@@ -44,14 +62,14 @@ export function DateTimePicker24h() {
           variant="outline"
           className={cn(
             "w-full justify-start text-left font-normal",
-            !date && "text-muted-foreground"
+            !value && "text-muted-foreground"
           )}
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
-          {date ? (
-            format(date, "MM/dd/yyyy hh:mm")
+          {value ? (
+            format(value, "MM/dd/yyyy HH:mm") // Use HH for 24-hour format
           ) : (
-            <span>MM/DD/YYYY hh:mm</span>
+            <span>Select date and time</span>
           )}
         </Button>
       </PopoverTrigger>
@@ -59,39 +77,39 @@ export function DateTimePicker24h() {
         <div className="sm:flex">
           <Calendar
             mode="single"
-            selected={date}
+            selected={value}
             onSelect={handleDateSelect}
             initialFocus
           />
-          <div className="flex flex-col sm:flex-row sm:h-[300px] divide-y sm:divide-y-0 sm:divide-x">
-            <ScrollArea className="w-64 sm:w-auto">
+          <div className="flex flex-col sm:flex-row sm:h-[288px] divide-y sm:divide-y-0 sm:divide-x">
+            <ScrollArea className="w-full sm:w-auto">
               <div className="flex sm:flex-col p-2">
-                {hours.reverse().map((hour) => (
+                {hours.map((hour) => (
                   <Button
                     key={hour}
-                    size="icon"
                     variant={
-                      date && date.getHours() === hour ? "default" : "ghost"
+                      value && value.getHours() === hour ? "default" : "ghost"
                     }
-                    className="sm:w-full shrink-0 aspect-square"
+                    className="w-full shrink-0"
                     onClick={() => handleTimeChange("hour", hour.toString())}
                   >
-                    {hour}
+                    {hour.toString().padStart(2, "0")}
                   </Button>
                 ))}
               </div>
               <ScrollBar orientation="horizontal" className="sm:hidden" />
             </ScrollArea>
-            <ScrollArea className="w-64 sm:w-auto">
+            <ScrollArea className="w-full sm:w-auto">
               <div className="flex sm:flex-col p-2">
-                {Array.from({ length: 12 }, (_, i) => i * 5).map((minute) => (
+                {minutes.map((minute) => (
                   <Button
                     key={minute}
-                    size="icon"
                     variant={
-                      date && date.getMinutes() === minute ? "default" : "ghost"
+                      value && value.getMinutes() === minute
+                        ? "default"
+                        : "ghost"
                     }
-                    className="sm:w-full shrink-0 aspect-square"
+                    className="w-full shrink-0"
                     onClick={() =>
                       handleTimeChange("minute", minute.toString())
                     }

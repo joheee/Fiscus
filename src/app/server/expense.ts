@@ -6,6 +6,14 @@ export type ExpenseWithLabel = Prisma.ExpenseGetPayload<{
   include: { label: true };
 }>;
 
+export type ExpenseFormValues = {
+  name: string;
+  quantity: number;
+  price: number;
+  label_id: string;
+  transaction_date: Date;
+};
+
 export async function getAllExpenseForCurrentUser(): Promise<
   ExpenseWithLabel[]
 > {
@@ -29,4 +37,6 @@ export async function getAllExpenseForCurrentUser(): Promise<
   return expense;
 }
 
-export async function createExpense() {}
+export async function createExpense(data: ExpenseFormValues) {
+  console.log(data);
+}
