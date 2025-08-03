@@ -1,3 +1,5 @@
+"use server";
+
 import prisma from "@/app/lib/prisma";
 import { getUserSession } from "@/app/lib/session";
 import { Prisma } from "@/generated/prisma";
@@ -39,4 +41,5 @@ export async function getAllExpenseForCurrentUser(): Promise<
 
 export async function createExpense(data: ExpenseFormValues) {
   console.log(data);
+  return { error: "" };
 }

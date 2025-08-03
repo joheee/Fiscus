@@ -36,7 +36,7 @@ export default function CreateExpensePage() {
     setFormError(null);
     const result = await createExpense(data);
 
-    if (result?.error) {
+    if (result.error) {
       setFormError(result.error);
     }
   };
