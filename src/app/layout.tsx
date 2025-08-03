@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description: "Fiscus - Personal Expense Tracker - Dashboard Page",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
