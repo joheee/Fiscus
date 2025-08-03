@@ -1,7 +1,6 @@
-import React from 'react'
+import React from "react";
+import { ChartPieLabel } from "./PieChart";
 
 export default function page() {
-  return (
-    <div>Profile Page</div>
-  )
+  return <ChartPieLabel />;
 }
