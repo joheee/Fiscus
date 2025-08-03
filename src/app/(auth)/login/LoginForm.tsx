@@ -88,7 +88,7 @@ export default function LoginForm() {
         )}
 
         <button
-          className="w-full bg-blue-500 text-background py-2 rounded-lg disabled:bg-bg-700"
+          className="w-full bg-blue-500 text-background py-2 rounded-lg disabled:bg-blue-700"
           type="submit"
           disabled={isSubmitting}
         >

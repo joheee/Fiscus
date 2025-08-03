@@ -69,7 +69,7 @@ export default function RegisterForm() {
             type="text"
           />
           {errors.full_name && (
-            <p className="text-red-500 text-xs mt-1">
+            <p className="text-red-error text-xs mt-1">
               {errors.full_name.message}
             </p>
           )}
@@ -92,7 +92,7 @@ export default function RegisterForm() {
             type="email"
           />
           {errors.email && (
-            <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>
+            <p className="text-red-error text-xs mt-1">{errors.email.message}</p>
           )}
         </div>
 
@@ -113,7 +113,7 @@ export default function RegisterForm() {
             type="password"
           />
           {errors.password && (
-            <p className="text-red-500 text-xs mt-1">
+            <p className="text-red-error text-xs mt-1">
               {errors.password.message}
             </p>
           )}
@@ -132,21 +132,21 @@ export default function RegisterForm() {
             })}
             className="w-full px-3 py-2 border rounded-lg"
             id="confirm_password"
-            type="password" // FIX: Changed type to "password"
+            type="password"
           />
           {errors.confirm_password && (
-            <p className="text-red-500 text-xs mt-1">
+            <p className="text-red-error text-xs mt-1">
               {errors.confirm_password.message}
             </p>
           )}
         </div>
 
         {errorMsg && (
-          <p className="text-red-500 text-sm mb-4 text-center">{errorMsg}</p>
+          <p className="text-red-error text-sm mb-4 text-center">{errorMsg}</p>
         )}
 
         <button
-          className="w-full bg-blue-500 text-white py-2 rounded-lg disabled:bg-gray-400"
+          className="w-full bg-blue-500 text-background py-2 rounded-lg disabled:bg-blue-700"
           type="submit"
           disabled={isSubmitting}
         >
