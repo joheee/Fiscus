@@ -51,11 +51,8 @@ export async function RegisterUser(data: RegisterFormValues) {
       return { error: "Password must be with confirm password." };
 
     const salt = process.env.HASH_SALT;
-    if (!salt) {
-      throw new Error("HASH_SALT is not defined in environment variables.");
-    }
 
-    const hashedPassword = await bcrypt.hash(password, parseInt(salt));
+    const hashedPassword = await bcrypt.hash(password, parseInt(salt!));
     const newUser = await prisma.user.create({
       data: {
         email,

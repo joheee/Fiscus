@@ -4,9 +4,6 @@ import prisma from "./prisma";
 
 export async function CreateJwt(user: { user_id: string }) {
   const secret = process.env.JWT_SECRET;
-  if (!secret) {
-    throw new Error("JWT_SECRET is not defined in environment variables.");
-  }
   const secretKey = new TextEncoder().encode(secret);
 
   const token = await new SignJWT({ ...user })
@@ -25,9 +22,6 @@ export async function CreateJwt(user: { user_id: string }) {
 
 export async function getUserSession() {
   const secret = process.env.JWT_SECRET;
-  if (!secret) {
-    throw new Error("JWT_SECRET is not defined in environment variables.");
-  }
   const secretKey = new TextEncoder().encode(secret);
 
   try {
