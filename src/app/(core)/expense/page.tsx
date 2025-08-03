@@ -1,9 +1,8 @@
 import React from "react";
-import { TableDemo } from "./Table";
-import { getAllExpense } from "../server/expense";
+import { ExpenseTable } from "./ExpenseTable";
+import { getAllExpenseForCurrentUser } from "../server/expense";
 
 export default async function page() {
-  const expenses = await getAllExpense();
-  console.log(expenses);
-  return <TableDemo />;
+  const expenses = await getAllExpenseForCurrentUser();
+  return <ExpenseTable expenses={expenses} />;
 }
