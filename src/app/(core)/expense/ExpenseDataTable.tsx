@@ -35,7 +35,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { ExpenseWithLabel } from "../../server/expense";
+import { deleteExpense, ExpenseWithLabel } from "../../server/expense";
 
 // Define the columns for your expense data
 export const columns: ColumnDef<ExpenseWithLabel>[] = [
@@ -152,6 +152,17 @@ export const columns: ColumnDef<ExpenseWithLabel>[] = [
     id: "actions",
     cell: ({ row }) => {
       const expense = row.original;
+      const handleDelete = async () => {
+        if (window.confirm("Are you sure you want to delete this expense?")) {
+          try {
+            await deleteExpense(expense.expense_id);
+            window.location.reload();
+          } catch (error) {
+            console.error("Failed to delete expense", error);
+          }
+        }
+      };
+
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -169,7 +180,7 @@ export const columns: ColumnDef<ExpenseWithLabel>[] = [
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>Edit Expense</DropdownMenuItem>
-            <DropdownMenuItem className="text-red-500">
+            <DropdownMenuItem onClick={handleDelete} className="text-red-500">
               Delete Expense
             </DropdownMenuItem>
           </DropdownMenuContent>

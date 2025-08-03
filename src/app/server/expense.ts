@@ -3,6 +3,7 @@
 import prisma from "@/app/lib/prisma";
 import { getUserSession } from "@/app/lib/session";
 import { Prisma } from "@/generated/prisma";
+import { revalidatePath } from "next/cache";
 
 export type ExpenseWithLabel = Prisma.ExpenseGetPayload<{
   include: { label: true };
@@ -56,4 +57,12 @@ export async function createExpense(data: ExpenseFormValues) {
   });
 
   return { success: true, expense: newExpense };
+}
+
+export async function deleteExpense(expense_id: string) {
+  const deleteExpense = await prisma.expense.delete({
+    where: { expense_id },
+  });
+  revalidatePath("/expense");
+  return { success: true, expense: deleteExpense };
 }
