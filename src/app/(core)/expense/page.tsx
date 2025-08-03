@@ -1,13 +1,12 @@
 import React from "react";
-import { ExpenseTable } from "./ExpenseTable";
 import { getAllExpenseForCurrentUser } from "../server/expense";
+import { ExpenseDataTable } from "./ExpenseDataTable";
 
 export default async function page() {
   const expenses = await getAllExpenseForCurrentUser();
   return (
     <>
-      Test
-      <ExpenseTable expenses={expenses} />
+      <ExpenseDataTable expenses={expenses} />
     </>
   );
 }

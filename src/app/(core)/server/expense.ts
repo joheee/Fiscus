@@ -1,28 +1,13 @@
 import prisma from "@/app/lib/prisma";
 import { getUserSession } from "@/app/lib/session";
+import { Prisma } from "@/generated/prisma";
 
-export interface ExpenseInterface {
-  expense_id: string;
-  name: string;
-  quantity: number;
-  price: number;
-  created_at: Date;
-  updated_at: Date;
-  user_id: string;
-  label_id: string;
-  label: LabelInterface;
-}
-
-export interface LabelInterface {
-  name: string;
-  created_at: Date;
-  updated_at: Date;
-  user_id: string | null;
-  label_id: string;
-}
+export type ExpenseWithLabel = Prisma.ExpenseGetPayload<{
+  include: { label: true };
+}>;
 
 export async function getAllExpenseForCurrentUser(): Promise<
-  ExpenseInterface[]
+  ExpenseWithLabel[]
 > {
   const session = await getUserSession();
   if (!session) {
@@ -40,5 +25,6 @@ export async function getAllExpenseForCurrentUser(): Promise<
       created_at: "desc",
     },
   });
+  console.log(expense);
   return expense;
 }
