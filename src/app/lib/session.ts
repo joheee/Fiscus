@@ -16,8 +16,7 @@ export async function CreateJwt(user: { user_id: string }) {
 
   (await cookies()).set("session-token", token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    maxAge: 60 * 60 * 6,
+    maxAge: 60 * 60 * 12,
     path: "/",
   });
 
