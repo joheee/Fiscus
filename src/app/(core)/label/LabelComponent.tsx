@@ -15,7 +15,7 @@ export default function LabelComponent({
   return (
     <div className="flex flex-col gap-4">
       <div className="flex justify-end">
-        <Link href="/expense/create">
+        <Link href="/label/create">
           <Button variant="outline">
             Create Label
             <Plus className="mr-2 h-4 w-4" />

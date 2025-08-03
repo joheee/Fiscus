@@ -42,7 +42,7 @@ export default function CreateExpensePage() {
   };
 
   return (
-    <div className="mx-auto max-w-2xl">
+    <>
       <h1 className="mb-6 text-2xl font-bold">Create New Expense</h1>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <div>
@@ -158,6 +158,6 @@ export default function CreateExpensePage() {
           </Button>
         </div>
       </form>
-    </div>
+    </>
   );
 }
