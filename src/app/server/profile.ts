@@ -25,6 +25,12 @@ export async function getExpenseSummaryByLabel(startDate: Date, endDate: Date) {
     _sum: {
       price: true,
     },
+
+    orderBy: {
+      _sum: {
+        price: "desc",
+      },
+    },
   });
 
   if (summary.length === 0) {
@@ -47,20 +53,20 @@ export async function getExpenseSummaryByLabel(startDate: Date, endDate: Date) {
 
   const labelMap = new Map(labels.map((label) => [label.label_id, label.name]));
 
-  const chartData = summary.map((item) => {
+  const baseHue = 210;
+  const saturation = 70;
+  const initialLightness = 75;
+  const lightnessStep = 5;
+
+  const chartData = summary.map((item, index) => {
     const name = labelMap.get(item.label_id) || "Unknown Label";
 
-    let hash = 0;
-    for (let i = 0; i < name.length; i++) {
-      hash = name.charCodeAt(i) + ((hash << 5) - hash);
-      hash = hash & hash;
-    }
-    const hue = Math.abs(hash % 360);
+    const lightness = initialLightness - ((index * lightnessStep) % 40);
 
     return {
       name: name,
       total: item._sum.price || 0,
-      fill: `hsl(${hue}, 70%, 50%)`,
+      fill: `hsl(${baseHue}, ${saturation}%, ${lightness}%)`,
     };
   });
 
