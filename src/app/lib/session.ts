@@ -48,7 +48,7 @@ export async function getUserSession() {
     }
     return null;
   } catch (error) {
-    console.log("Failed to verify session");
+    console.log("Failed to verify session: ", error);
     return null;
   }
 }
