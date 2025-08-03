@@ -4,5 +4,10 @@ import { getAllExpenseForCurrentUser } from "../server/expense";
 
 export default async function page() {
   const expenses = await getAllExpenseForCurrentUser();
-  return <ExpenseTable expenses={expenses} />;
+  return (
+    <>
+      Test
+      <ExpenseTable expenses={expenses} />
+    </>
+  );
 }
