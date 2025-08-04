@@ -21,6 +21,7 @@ import {
   getExpenseSummaryByLabel,
   getTotalExpensesForCurrentUser,
 } from "@/app/server/profile";
+import { DateRangePicker } from "@/components/ui/date-range-picker";
 
 export const description = "A pie chart with a label";
 
@@ -51,6 +52,14 @@ export function ChartPieLabel() {
       <CardHeader className="items-center pb-0">
         <CardTitle>Total Expense By Label</CardTitle>
         <CardDescription>August 1 - Now</CardDescription>
+        <DateRangePicker
+          onUpdate={(values) => console.log(values)}
+          initialDateFrom="2023-01-01"
+          initialDateTo="2023-12-31"
+          align="start"
+          locale="en-GB"
+          showCompare={false}
+        />
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer
@@ -79,9 +88,6 @@ export function ChartPieLabel() {
             style: "currency",
             currency: "IDR",
           }).format(totalExpense)}
-        </div>
-        <div className="text-muted-foreground leading-none">
-          Showing total visitors for the last 6 months
         </div>
       </CardFooter>
     </Card>
