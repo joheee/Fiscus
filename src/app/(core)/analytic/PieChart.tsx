@@ -51,7 +51,6 @@ export function ChartPieLabel() {
     <Card className="flex flex-col">
       <CardHeader className="items-center pb-0">
         <CardTitle>Total Expense By Label</CardTitle>
-        <CardDescription>August 1 - Now</CardDescription>
         <DateRangePicker
           onUpdate={(values) => console.log(values)}
           initialDateFrom="2023-01-01"
