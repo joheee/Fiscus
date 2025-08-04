@@ -3,8 +3,8 @@ import { ChartPieLabel } from "./PieChart";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Fiscus | Labels",
-  description: "Fiscus - Personal Expense Tracker - Label Page",
+  title: "Fiscus | Analytics",
+  description: "Fiscus - Personal Expense Tracker - Analytic Page",
 };
 
 export default function page() {
