@@ -22,8 +22,20 @@ import {
   getTotalExpensesForCurrentUser,
 } from "@/app/server/profile";
 import { DateRangePicker } from "@/components/ui/date-range-picker";
+import { DateRange } from "react-day-picker";
 
 export const description = "A pie chart with a label";
+
+const getMonthDateRange = () => {
+  const today = new Date();
+  const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
+  const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+
+  firstDay.setHours(0, 0, 0, 0);
+  lastDay.setHours(23, 59, 59, 999);
+
+  return { from: firstDay, to: lastDay };
+};
 
 export function ChartPieLabel() {
   const [chartData, setChartData] = useState<
@@ -34,27 +46,38 @@ export function ChartPieLabel() {
     }[]
   >([]);
   const [totalExpense, setTotalExpense] = useState<number>(0);
+  const [dateRangeFilter, setDateRangeFilter] = useState<DateRange>(
+    getMonthDateRange()
+  );
+
+  console.log(dateRangeFilter);
+
   useEffect(() => {
     async function fetchData() {
       const data = await getExpenseSummaryByLabel(
-        new Date("2025-08-01"),
-        new Date()
+        dateRangeFilter.from!,
+        dateRangeFilter.to!
       );
-      const totalExpense = await getTotalExpensesForCurrentUser();
+      const totalExpense = await getTotalExpensesForCurrentUser(
+        dateRangeFilter.from!,
+        dateRangeFilter.to!
+      );
       setChartData(data);
       setTotalExpense(totalExpense);
     }
     fetchData();
-  }, []);
+  }, [dateRangeFilter]);
 
   return (
     <Card className="flex flex-col">
       <CardHeader className="items-center pb-0">
-        <CardTitle>Total Expense By Label</CardTitle>
+        <CardTitle className="text-center mb-4">
+          Total Expense By Label
+        </CardTitle>
         <DateRangePicker
-          onUpdate={(values) => console.log(values)}
-          initialDateFrom="2023-01-01"
-          initialDateTo="2023-12-31"
+          onUpdate={(values) => setDateRangeFilter(values.range)}
+          initialDateFrom={dateRangeFilter.from}
+          initialDateTo={dateRangeFilter.to}
           align="start"
           locale="en-GB"
           showCompare={false}
@@ -82,7 +105,7 @@ export function ChartPieLabel() {
       </CardContent>
       <CardFooter className="flex-col gap-2 text-sm">
         <div className="flex items-center gap-2 leading-none font-medium">
-          You already spend{" "}
+          You spend{" "}
           {new Intl.NumberFormat("en-US", {
             style: "currency",
             currency: "IDR",

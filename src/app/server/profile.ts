@@ -73,7 +73,10 @@ export async function getExpenseSummaryByLabel(startDate: Date, endDate: Date) {
   return chartData;
 }
 
-export async function getTotalExpensesForCurrentUser() {
+export async function getTotalExpensesForCurrentUser(
+  startDate: Date,
+  endDate: Date
+) {
   const session = await getUserSession();
   if (!session) {
     return 0;
@@ -85,6 +88,10 @@ export async function getTotalExpensesForCurrentUser() {
     },
     where: {
       user_id: session.user_id,
+      transaction_date: {
+        gte: startDate,
+        lte: endDate,
+      },
     },
   });
 

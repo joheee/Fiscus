@@ -150,7 +150,7 @@ export default function ProtectedLayoutClient({
         </div>
         <main className="flex-1 overflow-y-auto p-6">
           {/* This is where your page content will be rendered */}
-          <div className="rounded-lg bg-background p-6 shadow-md">
+          <div className="rounded-lg bg-background p-4 shadow-md">
             {children}
           </div>
         </main>
