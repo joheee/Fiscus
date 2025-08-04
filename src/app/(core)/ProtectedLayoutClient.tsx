@@ -115,9 +115,8 @@ function Navbar({
 
         {/* User Info and Logout */}
         <div className="flex items-center space-x-4">
-          <span className="font-medium ">{session.full_name}</span>
           <Button variant="outline" onClick={handleLogout}>
-            Logout
+            Logout {session.full_name}
             <LogOut className="mr-2 h-4 w-4" />
           </Button>
         </div>
