@@ -3,7 +3,6 @@
 import prisma from "@/app/lib/prisma";
 import { getUserSession } from "@/app/lib/session";
 import { Prisma } from "@/generated/prisma";
-import { revalidatePath } from "next/cache";
 
 export type ExpenseWithLabel = Prisma.ExpenseGetPayload<{
   include: { label: true };
@@ -33,7 +32,7 @@ export async function getAllExpenseForCurrentUser(): Promise<
       label: true,
     },
     orderBy: {
-      created_at: "desc",
+      transaction_date: "desc",
     },
   });
   return expense;
