@@ -2,23 +2,17 @@
 
 import { useForm, Controller } from "react-hook-form";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { getLabelsForCurrentUser } from "@/app/server/label";
 import { createExpense, ExpenseFormValues } from "@/app/server/expense";
 import { Label as LabelType } from "@/generated/prisma";
 import { DateTimePicker24h } from "@/components/ui/date-time-picker";
 
-export default function ExpenseForm() {
+export default function ExpenseForm({ labels }: { labels: LabelType[] }) {
   const router = useRouter();
-  const [labels, setLabels] = useState<LabelType[]>([]);
   const [formError, setFormError] = useState<string | null>(null);
-
-  useEffect(() => {
-    getLabelsForCurrentUser().then(setLabels);
-  }, []);
 
   const {
     register,
