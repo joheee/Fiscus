@@ -64,3 +64,26 @@ export async function deleteExpense(expense_id: string) {
   });
   return { success: true, expense: deleteExpense };
 }
+
+export async function getExpenseById(expense_id: string) {
+  return await prisma.expense.findFirst({
+    where: { expense_id },
+  });
+}
+
+export async function updateExpenseById(
+  expense_id: string,
+  data: ExpenseFormValues
+) {
+  const session = await getUserSession();
+  if (!session) {
+    return { error: "Session is empty!" };
+  }
+
+  const updateExpense = await prisma.expense.update({
+    where: { expense_id },
+    data,
+  });
+
+  return { success: true, expense: updateExpense };
+}

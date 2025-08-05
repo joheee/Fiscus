@@ -36,6 +36,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { deleteExpense, ExpenseWithLabel } from "../../server/expense";
+import Link from "next/link";
 
 // Define the columns for your expense data
 export const columns: ColumnDef<ExpenseWithLabel>[] = [
@@ -179,7 +180,9 @@ export const columns: ColumnDef<ExpenseWithLabel>[] = [
               Copy Expense ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Edit Expense</DropdownMenuItem>
+            <DropdownMenuItem>
+              <Link href={`expense/update/${expense.expense_id}`}>Edit Expense</Link>
+            </DropdownMenuItem>
             <DropdownMenuItem onClick={handleDelete} className="text-red-500">
               Delete Expense
             </DropdownMenuItem>
