@@ -1,15 +1,26 @@
 "use client";
-import { createLabel, LabelFormValues } from "@/app/server/label";
+import {
+  createLabel,
+  LabelFormValues,
+  updateLabelById,
+} from "@/app/server/label";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Label as LabelType } from "@/generated/prisma";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 
-export default function LabelForm() {
+type LabelUpdateParam = {
+  label: LabelType | null;
+};
+
+export default function LabelForm({ label }: LabelUpdateParam) {
   const router = useRouter();
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
+  const isEdit = !!label;
 
   const {
     register,
@@ -17,24 +28,35 @@ export default function LabelForm() {
     formState: { errors, isSubmitting },
   } = useForm<LabelFormValues>({
     defaultValues: {
-      name: "",
+      name: label?.name,
     },
   });
 
   const onSubmit = async (data: LabelFormValues) => {
     setErrorMsg(null);
-    const result = await createLabel(data);
-    if (result.error) {
-      setErrorMsg(result.error);
-      return;
+    if (isEdit) {
+      const result = await updateLabelById(label.label_id, data);
+      if (result.error) {
+        setErrorMsg(result.error);
+        return;
+      }
+      alert(`Label ${result.label?.name} successfully updated!`);
+    } else {
+      const result = await createLabel(data);
+      if (result.error) {
+        setErrorMsg(result.error);
+        return;
+      }
+      alert(`New label ${result.label?.name} successfully created!`);
     }
-    alert(`New label ${result.label?.name} successfully created!`);
     router.push("/label");
   };
 
   return (
     <>
-      <h1 className="mb-6 text-2xl font-bold">Create New Label</h1>
+      <h1 className="mb-6 text-2xl font-bold">
+        {isEdit ? `Update Label ${label.name}` : `Create New Label`}
+      </h1>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <div>
           <Label htmlFor="name" className="mb-2">
@@ -54,7 +76,11 @@ export default function LabelForm() {
 
         <div className="flex justify-end">
           <Button variant="outline" type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "Creating..." : "Create Label"}
+            {isSubmitting
+              ? "Loading..."
+              : isEdit
+              ? "Update Label"
+              : "Create Label"}
           </Button>
         </div>
       </form>

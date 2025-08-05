@@ -1,6 +1,6 @@
 import React from "react";
-import LabelForm from "./LabelForm";
 import { Metadata } from "next";
+import LabelForm from "../LabelForm";
 
 export const metadata: Metadata = {
   title: "Fiscus | Create Label",
@@ -8,5 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function page() {
-  return <LabelForm />;
+  return <LabelForm label={null} />;
 }
