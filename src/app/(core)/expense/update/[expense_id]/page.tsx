@@ -1,6 +1,6 @@
 import React from "react";
 import { Metadata } from "next";
-import ExpenseUpdateForm from "../../ExpenseForm";
+import ExpenseForm from "../../ExpenseForm";
 import { getExpenseById } from "@/app/server/expense";
 import { getLabelsForCurrentUser } from "@/app/server/label";
 
@@ -17,5 +17,5 @@ export default async function page({ params }: ExpensePageProps) {
   const { expense_id } = await params;
   const expense = await getExpenseById(expense_id);
   const labels = await getLabelsForCurrentUser();
-  return <ExpenseUpdateForm expense={expense!} labels={labels} />;
+  return <ExpenseForm expense={expense!} labels={labels} />;
 }
