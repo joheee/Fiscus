@@ -1,7 +1,7 @@
 import React from "react";
 import { Metadata } from "next";
-import ExpenseForm from "./ExpenseForm";
 import { getLabelsForCurrentUser } from "@/app/server/label";
+import ExpenseForm from "../ExpenseForm";
 
 export const metadata: Metadata = {
   title: "Fiscus | Create Expense",
@@ -10,5 +10,5 @@ export const metadata: Metadata = {
 
 export default async function page() {
   const labels = await getLabelsForCurrentUser();
-  return <ExpenseForm labels={labels} />;
+  return <ExpenseForm expense={null} labels={labels} />;
 }

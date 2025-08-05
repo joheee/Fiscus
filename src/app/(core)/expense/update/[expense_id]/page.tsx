@@ -1,6 +1,6 @@
 import React from "react";
 import { Metadata } from "next";
-import ExpenseUpdateForm from "./ExpenseUpdateForm";
+import ExpenseUpdateForm from "../../ExpenseForm";
 import { getExpenseById } from "@/app/server/expense";
 import { getLabelsForCurrentUser } from "@/app/server/label";
 
