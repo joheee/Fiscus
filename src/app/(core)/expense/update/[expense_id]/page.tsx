@@ -9,7 +9,11 @@ export const metadata: Metadata = {
   description: "Fiscus - Personal Expense Tracker - Update Expense Page",
 };
 
-export default async function page({ params }: any) {
+export default async function page({
+  params,
+}: {
+  params: { expense_id: string };
+}) {
   const expense = await getExpenseById(params.expense_id);
   const labels = await getLabelsForCurrentUser();
   return <ExpenseUpdateForm expense={expense!} labels={labels} />;
