@@ -36,6 +36,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { deleteLabel, LabelWithExpense } from "@/app/server/label";
+import Link from "next/link";
 
 // Define the columns for your Label data
 export const columns: ColumnDef<LabelWithExpense>[] = [
@@ -100,11 +101,11 @@ export const columns: ColumnDef<LabelWithExpense>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const Label = row.original;
+      const label = row.original;
       const handleDelete = async () => {
         if (window.confirm("Are you sure you want to delete this label?")) {
           try {
-            await deleteLabel(Label.label_id);
+            await deleteLabel(label.label_id);
             window.location.reload();
           } catch (error) {
             console.error("Failed to delete label", error);
@@ -122,12 +123,14 @@ export const columns: ColumnDef<LabelWithExpense>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(Label.label_id)}
+              onClick={() => navigator.clipboard.writeText(label.label_id)}
             >
               Copy Label ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Edit Label</DropdownMenuItem>
+            <DropdownMenuItem>
+              <Link href={`/label/update/${label.label_id}`}>Edit Label</Link>
+            </DropdownMenuItem>
             <DropdownMenuItem onClick={handleDelete} className="text-red-500">
               Delete Label
             </DropdownMenuItem>
